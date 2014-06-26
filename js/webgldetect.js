@@ -2,9 +2,6 @@
  * @fileoverview WebGL feature detecting library.
  * @suppress {missingProperties} ThreeJS main object is not compiled.
  */
-'use strict';
-
-goog.provide('quantum.WebGLDetector');
 
 
 /**
