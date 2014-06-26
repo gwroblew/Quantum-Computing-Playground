@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html ng-app="QuantumApp">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description"
+          content="Quantum Computing Playground is a WebGL based quantum computer simulator with its own IDE, scripting language, two-way debugger, quantum state visualizations, and many other features.">
+    <meta name="author" content="Laura Culp">
+    <meta property="og:image" content="http://quantum-playground.appspot.com/images/screenshot2.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@chromeexp">
+    <meta name="twitter:creator" content="@chromeexp">
+    <meta name="twitter:title" content="Quantum Computing Playground">
+    <meta name="twitter:description" content="Quantum Computing Playground is a WebGL based quantum computer simulator with its own IDE, scripting language, two-way debugger, quantum state visualizations, and many other features.">
+    <meta name="twitter:image" content="http://quantum-playground.appspot.com/images/screenshot2.png">
+    <meta name="twitter:image:src" content="http://quantum-playground.appspot.com/images/screenshot2.png">
+    <title>Quantum Computing Playground</title>
+    <link rel="shortcut icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2RpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDoyQjhDNzlDMTNFQzFFMzExOTY0NkQ1NkM4NjQ0MzVGQSIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo5RTRCRTBBRUM0NjExMUUzQjdCMkI3NTRENEU1QzdGMyIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo5RTRCRTBBREM0NjExMUUzQjdCMkI3NTRENEU1QzdGMyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IFdpbmRvd3MiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoyRThDNzlDMTNFQzFFMzExOTY0NkQ1NkM4NjQ0MzVGQSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoyQjhDNzlDMTNFQzFFMzExOTY0NkQ1NkM4NjQ0MzVGQSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pi18ijIAAAHbSURBVHjapFPBThNRFD2vHRPDhq5Z2NnJisIHGOcLlIUL2c0n9A9gJUtw78KViSZa3JgYY2hF0xhcTAiBCDSMGoKhtDDQ0nmd9971TmcqIxIW8JIzyct959x7z70jiAg3ObmrguPzJfvukwnn2gIAuSAsX1sg6e7qFq3406x9KIh83u02try9Ny+cZn2l+vCAqjF3aFHw65lt3R5zYSJPnq7bnf2XS3furflWc/m9TVpXz3Z3iq36J7S/fkbfDDhVZBSMCmzVU7NaHiAMVtHvbM5tVoRrhft77tnP3eLhyscf7W91hBpFbc5bGFYQHn2B0T1E3W30u42akrhvFOas3+8qk53Gd5w0tstxZiZX6B8Tklt4vAodtaBk7+34A5pefyWIDEpW3L+SEoZwPHgpzn3LekhGDoJCwE/lA8ZoTobS08mjSeY64sIYKFUQ+RHkbxViAWfjtShwaJQRWEz2KEm8YOjC0ChTgTplI08YKBmNI0qNzj06pOcs8lTxQxYIspudFVOyjUgqqD4CFohPjVEeLNLjFpWZOMWE6f82KVXRihFxEoNFvk5NzJDD8P9u4kybvEu3EcM9iI1MymKid+kqsw9+Wpqfsn1GLZkCT4kysSHnpr/zHwEGAEFyFdzSwP+bAAAAAElFTkSuQmCC" />
+    <link rel="stylesheet" href="/css/bootstrap_css-bundle.css" />
+    <link rel="stylesheet" href="/css/codemirror-bundle.css" />
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular-resource.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular-route.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular-sanitize.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular-touch.min.js"></script>
+    <script type="text/javascript" src="/js/codemirror-bundle.js"></script>
+    <script type="text/javascript" src="/js/threejs-bundle.js"></script>
+    <script type="text/javascript" src="/js/module.js"></script>
+    <script type="text/javascript" src="/js/qmath.js"></script>
+    <script type="text/javascript" src="/js/qscript.js"></script>
+    <script type="text/javascript" src="/js/demo.js"></script>
+    <script type="text/javascript" src="/js/simulator.js"></script>
+    <script type="text/javascript" src="/js/compiler.js"></script>
+    <script type="text/javascript" src="/js/qscriptvm.js"></script>
+    <script type="text/javascript" src="/js/playground.js"></script>
+  </head>
+  <body ng-controller="NavCtrl" role="document">
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse"
+                  data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="" ng-click="loadHome()" style="padding-top:0px;">
+            <img width="150" height="50" title="" alt="< q | p >" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAAAyCAYAAAC+jCIaAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyBpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBXaW5kb3dzIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjIyN0Q1Q0UwQzE0NzExRTM4RTY1QzJCNUVEMkNBOEU5IiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjIyN0Q1Q0UxQzE0NzExRTM4RTY1QzJCNUVEMkNBOEU5Ij4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6MjI3RDVDREVDMTQ3MTFFMzhFNjVDMkI1RUQyQ0E4RTkiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6MjI3RDVDREZDMTQ3MTFFMzhFNjVDMkI1RUQyQ0E4RTkiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4Av7QoAAAPgUlEQVR42uycWWxc1RmA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" />
+          </a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li ng-class="navClass('home')"><a href="" ng-click="loadHome()">
+              <span class="glyphicon glyphicon-home"></span>
+              Home</a></li>
+            <li ng-class="navClass('playground')"><a href="" ng-click="loadPlayground()">
+              <span class="glyphicon glyphicon-tree-conifer"></span>
+              Playground</a></li>
+            <li ng-class="navClass('myscripts')"><a href="" ng-click="loadMyScripts()">
+              <span class="glyphicon glyphicon-list"></span>
+              My Scripts</a></li>
+            <li class="dropdown">
+              <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                <span class="glyphicon glyphicon-plus-sign"></span>
+                Examples <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="" ng-click="loadPlayground(examples.DEFAULT)">
+                  Basic Example</a></li>
+                <li><a href="" ng-click="loadPlayground(examples.WALK_THROUGH)">
+                  Quantum Computing Walk-through</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">QScript</li>
+                <li><a href="" ng-click="loadPlayground(examples.QSCRIPT_SYNTAX)">
+                  Full Syntax</a></li>
+                <li><a href="" ng-click="loadPlayground(examples.QSCRIPT_BASIC)">
+                  Math Functions</a></li>
+                <li><a href="" ng-click="loadPlayground(examples.QSCRIPT_COMMANDS)">
+                  Builtin Commands</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Tutorials</li>
+                <li><a href="" ng-click="loadPlayground(examples.GATES_HADAMARD)">
+                  Hadamard Gate</a></li>
+                <li><a href="" ng-click="loadPlayground(examples.ALL_GATES)">
+                  Quantum Gates</a></li>
+                <li><a href="" ng-click="loadPlayground(examples.GATES_REVERSIBLE)">
+                  Reversible Computation</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Advanced</li>
+                <li><a href="" ng-click="loadPlayground(examples.GROVERS)">
+                  Grover's Algorithm</a></li>
+                <li><a href="" ng-click="loadPlayground(examples.SHORS)">
+                  Shor's Algorithm</a></li>
+                <li><a href="" ng-click="loadPlayground(examples.SHORS_LIBQUANTUM)">
+                  Shor's Algorithm (libquantum)</a></li>
+              </ul>
+            </li>
+            <li ng-class="navClass('about')"><a href="" ng-click="loadAbout()">
+              <span class="glyphicon glyphicon-info-sign"></span>
+              Help</a></li>
+            <li class="social-link" ng-class="active" style="padding-left:30px;">
+              <a class="gplus"
+                 ng-href="https://plus.google.com/share?url={{urlEncode(location.absUrl())}}"
+                 onclick="javascript:window.open(this.href, '',
+                          'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,
+                          width=600');return false;">Share on Google+</a>
+            </li>
+            <li class="social-link" ng-class="active">
+              <a class="facebook"
+                 ng-href="http://www.facebook.com/sharer.php?u={{urlEncode(location.absUrl())}}"
+                 target="_blank">Share on Facebook</a>
+            </li>
+            <li class="social-link" ng-class="active">
+              <a class="twitter"
+                 href="http://twitter.com/intent/tweet?text={{urlEncode('Program a simulated quantum computer with Quantum Computing Playground, a new Chrome Experiment.')}}&amp;url={{urlEncode(location.absUrl())}}"
+                 target="_blank">Share on Twitter</a>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li class="navbar-text active"><span class="glyphicon glyphicon-user"></span>
+              {{userinfo.nickname}}</li>
+            <li><a href="{{userinfo.url}}" class="navbar-link">
+              {{userinfo.nickname.length > 0 ? 'Sign out' : 'Sign in'}}</a>
+            </li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div class="container-liquid theme-showcase" role="main" ng-view>
+    </div>
+    <p class="text-center">
+      <a href="http://www.google.com/policies/">
+        <small>Terms &amp; Privacy</small>
+      </a>
+    </p>
+    <p class="text-center">
+      <small>Logo Design by <a href="http://www.jwinfodesign.com">Joanna Wroblewska</a>
+      </small>
+    </p>
+
+    <script type="text/javascript" src="/js/jquery-bundle.js"></script>
+    <script type="text/javascript" src="/js/bootstrap_js-bundle.js"></script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-49926329-1', 'auto', {'allowLinker': true});
+      ga('require', 'linker');
+      ga('linker:autoLink', ['qcplayground.withgoogle.com', 'quantumplayground.net']);
+      ga('send', 'pageview');
+      $(window).on('resize load', function() {
+          $('body').css({'padding-top': $('.navbar').height() + 5 + 'px'});
+      });
+    </script>
+  </body>
+</html>

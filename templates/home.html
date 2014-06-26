@@ -1,0 +1,74 @@
+<div class="row">
+  <div class="col-sm-6">
+    <div class="panel panel-danger" ng-show="showWebGLWarning">
+      <div class="panel-heading">
+        <h3 class="panel-title">Warning!</h3>
+      </div>
+      <div class="panel-body">
+        <div ng-bind-html="webGLWarningMessage"></div>
+      </div>
+    </div>
+    <div class="jumbotron">
+      <div class="page-header">
+        <h2>Quantum Computing Playground</h2>
+      </div>
+      <p>
+        Quantum Computing Playground is a browser-based WebGL Chrome Experiment.
+        It features a GPU-accelerated quantum computer with a simple IDE interface,
+        and its own scripting language with debugging and 3D quantum state visualization features.
+        Quantum Computing Playground can efficiently simulate quantum registers up to 22 qubits,
+        run Grover's and Shor's algorithms, and has a variety of quantum gates
+        built into the scripting language itself.
+      </p><br />
+      <p><a href="" ng-click="loadPlayground(examples.DEFAULT)" class="btn btn-primary btn-lg"
+            role="button">Start with Basic Example &raquo;</a></p>
+      <p><a href="" ng-click="loadPlayground(examples.SHORS)" class="btn btn-success btn-lg"
+            role="button">Play with Shor's Algorithm &raquo;</a></p>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="homepage-btn">
+      <a href="" ng-click="loadDemo()" class="btn btn-info btn-lg"
+            role="button">Step-by-step Demo &raquo;</a>
+    </div>
+    <div class="page-header"><h3>How do quantum computers work?</h3></div>
+    <p>
+      A classic computer processes bits, which at any given time can be in one of two states:
+      0 or 1. <a href="https://en.wikipedia.org/wiki/Quantum_computer">Quantum computers</a>
+      use <a href="https://en.wikipedia.org/wiki/Qubit">qubits</a>,
+      which can exist in any superposition of states 0 and 1, and are
+      represented by a <a href="https://en.wikipedia.org/wiki/Complex_number">complex number</a>.
+      When N qubits are in superposition, a combination of 2^N states is created.
+      A classic computer can only hold one of these states at a time,
+      while quantum computers can perform meaningful operations on superpositions of states.
+      This basic property of quantum computers opens a way to multiple
+      <a href="https://en.wikipedia.org/wiki/Quantum_algorithms">interesting algorithms</a>.
+    </p>
+    <div class="page-header"><h3>How do you program a quantum computer?</h3></div>
+    <p>
+      The most basic operations performed on qubits are defined by quantum gates, similar to
+      logical gates used in classic computers. Using
+      <a href="https://en.wikipedia.org/wiki/Quantum_gate">quantum gates</a> one can build
+      complex algorithms, usually ending in a measurement operation, which obtains
+      a classical value of qubits (either 0 or 1, but not a superposition).
+      The state of a quantum computer, a set of qubits called quantum register,
+      can be visualized in a <a href="" ng-click="loadAbout()">number of ways</a>,
+      typically as a 2D or 3D graph,
+      on which points or bars represent superpositions of qubits, while their
+      color or bar height represent amplitude and phase of a given superposition.
+      An interesting property of quantum gates is their reversibility, allowing
+      for program execution both forward and in reverse without any side-effects.
+    </p>
+    <div class="page-header"><h3>Where can I buy a real quantum computer?</h3></div>
+    <p>
+      As of today the only company selling quantum computers is
+      <a href="http://www.dwavesys.com">D-Wave</a>, but unfortunately their architecture does not
+      perform arbitrary quantum gate operations on sequences of qubits (which is what
+      Quantum Computing Playground simulates at this time).
+      The proof-of-concepts for capabilities of quantum computing
+      have been demonstrated in multiple laboratories around the world though, so there is a chance
+      that quantum computers will become one day everyday’s reality.
+      For now, you can experience the technology of tomorrow today, inside our Playground.
+    </p>
+  </div>
+</div>

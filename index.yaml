@@ -1,0 +1,8 @@
+indexes:
+
+- kind: QScript
+  properties:
+  - name: author
+  - name: created
+  - name: modified
+  - name: name

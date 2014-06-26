@@ -1,0 +1,272 @@
+<div class="container">
+  <div class="page-header">
+    <h2>Contact</h2>
+  </div>
+  <p><b>Quantum Computing Playground</b> was developed in 2014 by a group of Google engineers.<br />
+  To report bugs, suggest new features, or send comments, please contact
+  <a href="mailto:laculp@google.com">Laura Culp</a>.</p>
+  <div class="page-header">
+    <h2>Source Code</h2>
+  </div>
+  <p>
+    The <b>source code</b> of Quantum Computing Playground has been
+    <a href="https://github.com/gwroblew/Quantum-Computing-Playground">published on GitHub</a>
+    under Apache 2.0 license.
+  </p>
+  <div class="page-header">
+    <h2>Features</h2>
+  </div>
+  <p>
+    This is a simulated model of a quantum computer, and it has one quantum register,
+    with a fixed size of between 6 and 22 qubits.
+    Users can interact with the simulated quantum computer by writing scripts using a language
+    called QScript, which can then be saved and shared. All saved scripts are public,
+    but are only accessible through knowledge of a specific URL.
+    A development environment, providing compilation and debugging features, can be used,
+    and the quantum state of the register can be visualized in multiple ways.
+  </p>
+  <div class="page-header">
+    <h2>Implementation of Quantum Computer</h2>
+  </div>
+  <p>
+    Internally the quantum register is stored as global vector state of the quantum system,
+    in a floating point RGB or RGBA texture of the proper size. For example, if a state vector
+    has 8 qubits, there need to be 256 quantum states, so the texture storing this information
+    is of size 16 x 16 pixels.
+    Only the R and G components of the pixel are used
+    (for the real and imaginary parts of the state; usage of LA textures is still considered,
+    but apparently the RGBA type of texture is most commonly supported).
+    Quantum gates are typically implemented as separate GLSL pixel shader programs.
+    In the shaders we need to address the states of the vector directly through a bitmap,
+    and since WebGL does not support proper integer arithmetic,
+    we only have 23 significant bits available in a FP number,
+    thus our vector size is limited to 22 qubits (it must be even for the maximum
+    texture size of 2048 x 2048 pixels).
+    In theory, with more GPU memory available, vectors of up to 28 qubits could be supported,
+    but addressing the states in any complex way would slow the shader programs.
+    <br />
+    Operations that need integration of the vector state (like normalization or measurement),
+    use reducing shaders. For an example to find maximum amplitude of a state within
+    a vector of size 16 x 16 pixels, we first calculate partial maximum values
+    and reduce the state to 8 x 8 pixels, then to 4 x 4 pixels,
+    then we read 16 complex numbers with CPU and perform the remaining calculations
+    directly in browser.
+  </p>
+  <div class="page-header">
+    <h2>QScript</h2>
+  </div>
+  <p>
+    The scripting language and its compiler / VM created for the purpose of Quantum Computing
+    Playground have the following features:</p>
+  <table class="table"><tbody>
+    <tr><td>- in-browser compilation into an internal code</td></tr>
+    <tr><td>- single-step and continuous execution of the compiled code</td></tr>
+    <tr><td>- nested procedures</td></tr>
+    <tr><td>- local variables (within procedures)</td></tr>
+    <tr><td>- expression syntax compatible with JavaScript</td></tr>
+    <tr><td>- access to Math functions from JavaScript</td></tr>
+    <tr><td>- “for-endfor” loop, “if-else-endif” constructs</td></tr>
+    <tr><td>- full debugging support with call stack and variables inspection</td></tr>
+    </tbody></table>
+  <p>
+    Although quantum gates operations are applied to specific qubits, in most cases
+    they affect the entire state of quantum register. For an example the SigmaX gate,
+    equivalent of simple classical bit negation, would swap the amplitude values
+    of states XXXX0XXX and XXXX1XXX, for all possible values of the X part (state
+    number here is represented in binary form for vector size 8).<br>
+    The following quantum gates are available in the simulator
+    (see also <a href="" ng-click="loadPlayground(examples.ALL_GATES)">examples of their usage</a>):
+  </p>
+  <table class="table"><tbody>
+    <tr><td><b>Gate Code</b></td><td><b>Description</b></td></tr>
+    <tr><td>Hadamard</td><td>
+      <a href="http://en.wikipedia.org/wiki/Quantum_gate#Hadamard_gate">Hadamard gate</a>
+      creates a superposition of states 0 and 1 of a given qubit. It is also its own inverse
+      operation: applying it twice restores the original state.
+    </td></tr>
+    <tr><td>SigmaX, SigmaY, SigmaZ</td><td>
+      <a href="http://en.wikipedia.org/wiki/Quantum_gate#Pauli-X_gate">Sigma X</a>, also
+      known as Pauli X gate, is a quantum equivalent of bit negation. Since qubits are represented
+      by complex numbers, there is no simple concept of negation for them.
+      Sigma Y and Sigma Z gates "negate" qubits in alternative ways.
+    </td></tr>
+    <tr><td>Rx, Ry, Rz</td><td>
+      <a href="http://www.physics.udel.edu/~msafrono/650/Lecture%208.pdf">
+        Rotation gates (see page 5)</a>.
+    </td></tr>
+    <tr><td>CNot</td><td>
+      <a href="http://en.wikipedia.org/wiki/Quantum_gate#Controlled_gates">Controlled NOT</a>
+      gate applies the same transformation as Sigma X gate, except that its execution
+      is conditioned on the value of the first argument - control qubit. The quantum
+      negation is only performed on states where the control qubit has value 1. States
+      where control qubit has value 0 remain unchanged.
+    </td></tr>
+    <tr><td>Toffoli</td><td>
+      <a href="http://en.wikipedia.org/wiki/Quantum_gate#Toffoli_gate">Toffoli gate</a>
+      operates in the same way as controlled NOT gate, taking two control qubits and the
+      target qubit. Negation is only performed on states where both control qubits have
+      value 1.
+    </td></tr>
+    <tr><td>Phase</td><td>
+      <a href="http://en.wikipedia.org/wiki/Quantum_gate#Phase_shift_gates">Phase gate</a>
+      rotates amplitude of states (a complex number) where target qubit has value 1. Angle
+      of rotation is given as the second argument.
+    </td></tr>
+    <tr><td>CPhase</td><td>
+      Works like phase gate, but its operation is conditioned on the first control qubit
+      (like in controlled NOT gate).
+    </td></tr>
+    <tr><td>Swap</td><td>
+      <a href="http://en.wikipedia.org/wiki/Quantum_gate#Swap_gate">Swap gate</a> exchanges
+      amplitude of states for which source and target values of qubits are different (0 and 1,
+      or 1 and 0).
+    </td></tr>
+    <tr><td>Unitary</td><td>
+      Unitary gate performs arbitrary unitary operation on target qubit. The operation
+      is defined by giving eight numbers of 2x2
+      <a href="http://en.wikipedia.org/wiki/Unitary_matrix">unitary matrix</a>.
+    </td></tr>
+    <tr><td>QFT</td><td>
+      QFT gate applies
+      <a href="http://en.wikipedia.org/wiki/Quantum_Fourier_transform">Quantum Fourier Transform</a>
+      to a part of the quantum register. First argument specifies the first qubit of the
+      transform, while the second - width of the transform (number of qubits to which the
+      transform will be applied).
+    </td></tr>
+    <tr><td>InvQFT</td><td>
+      Works like QFT gate, performing inverse transform.
+    </td></tr>
+    <tr><td>ExpModN</td><td>
+      ExpModN gate applies
+      <a href="http://en.wikipedia.org/wiki/Modular_exponentiation">modular exponentiation</a>
+      operation to a subset of quantum register. On the input it assumes that the quantum
+      state is a superposition of k qubits. In the output state non-zero amplitudes will be
+      present only for states that are the result of modular exponentiation calculation given
+      2^k superposed states as the input.
+    </td></tr>
+    <tr><td>ShiftLeft, ShiftRight</td><td>
+      Shifting gates move entire quantum vector state in given direction by the given
+      number of qubits. The gates assume that the qubits destroyed in the shifting operation
+      have not been used, or have been just measured, so that the vector state will remain
+      normalized.
+    </td></tr>
+    <tr><td>Decoherence</td><td>
+      Decoherence gate applies phase damping operation, taking strength factor as the first
+      argument. For an example description of phase damping, see
+      <a href="http://www.amazon.com/Quantum-Computation-Information-Anniversary-Edition/dp/1107002176">
+        Quantum Computation and Quantum Information, chapter 8.3.6</a>.
+    </td></tr>
+    <tr><td>Measure</td><td>
+      Measure operation takes no arguments, and using JavaScript random number generator
+      selects a state from the quantum vector that would represent a probabilistic value of
+      physical measurement of the quantum register. The operation does not destroy the
+      quantum vector, so the measurement operation can be performed again and again without
+      repeating the quantum calculations.
+    </td></tr>
+    <tr><td>MeasureBit</td><td>
+      MeasureBit operation applies partial measurement to a single qubit of the quantum vector.
+      Unlike complete measurement, single qubit measurement partially collapses the vector.
+      For an example, given 4-qubit vector state:
+      <table class="table"><tbody>
+        <tr>
+          <td>0000</td><td>0001</td><td>0010</td><td>0011</td>
+          <td>0100</td><td>0101</td><td>0110</td><td>0111</td>
+          <td>1000</td><td>1001</td><td>1010</td><td>1011</td>
+          <td>1100</td><td>1101</td><td>1110</td><td>1111</td>
+        </tr>
+        <tr>
+          <td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td>
+          <td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td>
+          <td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td>
+          <td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td>
+        </tr>
+      </tbody></table>
+      measurement of the most significant qubit would yield result 0 or 1 with equal
+      probability, and after measuring 1 the vector state will be normalized to:
+      <table class="table"><tbody>
+        <tr>
+          <td>0000</td><td>0001</td><td>0010</td><td>0011</td>
+          <td>0100</td><td>0101</td><td>0110</td><td>0111</td>
+          <td>1000</td><td>1001</td><td>1010</td><td>1011</td>
+          <td>1100</td><td>1101</td><td>1110</td><td>1111</td>
+        </tr>
+        <tr>
+          <td>0</td><td>0</td><td>0</td><td>0</td>
+          <td>0</td><td>0</td><td>0</td><td>0</td>
+          <td>0.35</td><td>0.35</td><td>0.35</td><td>0.35</td>
+          <td>0.35</td><td>0.35</td><td>0.35</td><td>0.35</td>
+        </tr>
+      </tbody></table>
+    </td></tr>
+    </tbody></table>
+  <div class="page-header">
+    <h2>Visualization Modes</h2>
+  </div>
+  <p>
+    The global quantum vector state can be visualized in three ways: black and white 2D square,
+    color 2D square, and 3D surface. In 2D views hovering over the visualization shows value of
+    the state that mouse pointer points to. The amplitude of state maps to luminance in 2D views.
+    In color mode, phase is visualized through color of a pixel, in accordance with matrix below
+    (where colors in between are interpolated accordingly). The 3D view uses height of the
+    surface as amplitude, and color as phase. In 3D view user can rotate the view using mouse,
+    touch, or script commands.
+  </p>
+  <table class="table">
+    <tbody>
+      <tr>
+        <td style="text-align:center;background-color:#00c080;">-0.707 + i0.707</td>
+        <td style="text-align:center;background-color:#00ff00;">i1.0</td>
+        <td style="text-align:center;background-color:#80ff80;">0.707 + i0.707</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;background-color:#00ffff;">-1.0</td>
+        <td style="text-align:center;background-color:#000000;color:white;">0.0</td>
+        <td style="text-align:center;background-color:#ffffff;">1.0</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;background-color:#808080;">-0.707 - i0.707</td>
+        <td style="text-align:center;background-color:#ff0000;">-i1.0</td>
+        <td style="text-align:center;background-color:#ff8080;">0.707 - i0.707</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="page-header">
+    <h2>Keyboard Shortcuts in Playground</h2>
+  </div>
+  <table class="table">
+    <tbody>
+      <tr>
+        <td>Ctrl + Shift + 1</td>
+        <td>Switch view mode to 2D.</td>
+      </tr>
+      <tr>
+        <td>Ctrl + Shift + 2</td>
+        <td>Switch view mode to 2D + phase.</td>
+      </tr>
+      <tr>
+        <td>Ctrl + Shift + 3</td>
+        <td>Switch view mode to 3D.</td>
+      </tr>
+      <tr>
+        <td>Ctrl + Shift + 4</td>
+        <td>Compile script.</td>
+      </tr>
+      <tr>
+        <td>Ctrl + Shift + 5</td>
+        <td>Run script / continue current execution.</td>
+      </tr>
+      <tr>
+        <td>Ctrl + Shift + 6</td>
+        <td>Step back in current execution.</td>
+      </tr>
+      <tr>
+        <td>Ctrl + Shift + 7</td>
+        <td>Single step into a script function.</td>
+      </tr>
+      <tr>
+        <td>Ctrl + Shift + 8</td>
+        <td>Step over a script function.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

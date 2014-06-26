@@ -1,0 +1,135 @@
+<div style="display:none" ng-include="'shaders.html'"></div>
+<div class="row">
+  <div class="col-sm-6">
+    <ul class="nav nav-pills">
+      <li ng-class="ctrl.viewClass('2d')"><a href="" ng-click="ctrl.setView2D()">2D</a></li>
+      <li ng-class="ctrl.viewClass('2dPhase')">
+        <a href="" ng-click="ctrl.setView2DPhase()">2D+Phase</a></li>
+      <li ng-class="ctrl.viewClass('3d')"><a href="" ng-click="ctrl.setView3D()">3D</a></li>
+      <li ng-class="ctrl.viewClass('3d+')"><a href="" ng-click="ctrl.setView3D2()">3D+</a></li>
+      <li class="navbar-right" ng-class="ctrl.normalize ? 'active' : ''">
+        <a href="" ng-click="ctrl.toggleNormalize()">Normalize</a></li>
+      <li class="navbar-text navbar-right">Max. Amplitude: {{ctrl.maxState | number:6}}
+        &nbsp;&nbsp;</li>
+    </ul>
+    <div class="panel panel-default small-bottom">
+      <div class="panel-body">
+        <canvas id="glcanvas" style="width:100%;"></canvas>
+        <div id="gloverlay" class="gl-overlay" ng-mousedown="ctrl.onMouseDown($event)"
+             ng-mousemove="ctrl.onMouseHover($event)" on-touch="ctrl.onTouchStart">
+          <div class="html-overlay" ng-bind-html="ctrl.overlayHtml"></div>
+          <div class="state-overlay" ng-hide="ctrl.viewType=='3d' || ctrl.viewType=='3d+'">
+            State: |{{ctrl.stateNumber | number:0}}><br />
+            Re: {{ctrl.stateRe | number:6}}<br />
+            Im: {{ctrl.stateIm | number:6}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <tabs>
+      <pane title="Output">
+        <div id="output" style="overflow:scroll">
+          <ul class="list-group">
+            <li class="list-group-item small-list-item"
+                ng-repeat="line in ctrl.output track by $index">
+              {{line}}</li>
+          </ul>
+        </div>
+      </pane>
+      <pane title="Call Stack">
+        <div id="callstack" style="overflow:scroll">
+          <ul class="list-group">
+            <li class="list-group-item small-list-item"
+                ng-repeat="frame in ctrl.callstack track by $index">
+              {{frame}}</li>
+          </ul>
+        </div>
+      </pane>
+      <pane title="Locals">
+        <div id="locals"style="overflow:scroll">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Variable</th>
+                <th>Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="local in ctrl.locals | orderBy: getLocalVarId">
+                <td>{{local[0]}}</td>
+                <td>{{local[1]}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </pane>
+    </tabs>
+  </div><!-- /.col-sm-6 -->
+  <div class="col-sm-6">
+    <div class="btn-group small-bottom">
+      <button type="button" class="btn btn-success" ng-click="ctrl.compile()"
+              ng-disabled="ctrl.scriptIsLoading||ctrl.isRunning()">Compile</button>
+      <button type="button" class="btn btn-danger" ng-click="ctrl.run()"
+              ng-disabled="ctrl.scriptIsLoading||!ctrl.isCompiled()">
+        {{ctrl.isRunning()?'&nbsp;&nbsp;&nbsp;Stop&nbsp;&nbsp;&nbsp;':ctrl.isStopped()?'Continue':
+        '&nbsp;&nbsp;&nbsp;&nbsp;Run&nbsp;&nbsp;&nbsp;&nbsp;'}}
+      </button>
+      <button type="button" class="btn btn-info" ng-click="ctrl.stepInto()"
+              ng-disabled="ctrl.scriptIsLoading||!ctrl.isCompiled()||ctrl.isRunning()">
+        Step Into</button>
+      <button type="button" class="btn btn-info" ng-click="ctrl.stepOver()"
+              ng-disabled="ctrl.scriptIsLoading||!ctrl.isStopped()">Step Over</button>
+      <button type="button" class="btn btn-warning" ng-click="ctrl.stepBack()"
+              ng-disabled="ctrl.scriptIsLoading||!ctrl.isStopped()">Step Back</button>
+    </div>
+    <div class="btn-group pull-right">
+      <button type="button" class="btn btn-danger" ng-click="ctrl.newScript()"
+              ng-show="ctrl.scriptCanUpdate">New</button>
+      <button type="button" class="btn btn-success" ng-click="ctrl.saveScript()"
+              ng-disabled="ctrl.scriptIsSaving||ctrl.scriptIsLoading">
+        {{ctrl.scriptIsLoading?'Loading...':ctrl.scriptIsSaving?'Saving...':
+        ctrl.scriptCanUpdate?'Update':'Save &amp; Fork'}}
+      </button>
+    </div>
+    <div class="panel panel-primary small-bottom">
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          <div class="input-group">
+            <span class="input-group-addon">Title:</span>
+            <input class="form-control" type="text" ng-model="ctrl.scriptName" />
+          </div>
+        </h3>
+        Author: {{ctrl.scriptAuthor}}
+        <span class="badge pull-right">Created: {{ctrl.scriptCreated | date:'short'}}</span>
+        <span class="badge pull-right">Modified: {{ctrl.scriptModified | date:'short'}}</span>
+      </div>
+      <div class="panel-body">
+        <div id="codeeditor"></div>
+      </div>
+    </div>
+  </div><!-- /.col-sm-6 -->
+</div>
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h3 class="panel-title" ng-hide="userinfo.nickname.length > 0">Comments</h3>
+    <div class="input-group" ng-show="userinfo.nickname.length > 0">
+      <span class="input-group-addon">Your comment:</span>
+      <input class="form-control" type="text" ng-model="ctrl.content" />
+      <span class="input-group-btn">
+        <button type="button" class="btn btn-success" ng-click="ctrl.saveComment()">Submit</button>
+      </span>
+    </div>
+  </div>
+  <div class="panel-body">
+    <ul class="list-group">
+      <li class="list-group-item" ng-repeat="comment in ctrl.comments | orderBy: 'created'">
+        <span class="badge pull-left">{{comment.created | date:'medium'}}</span>
+        &nbsp;&nbsp;&nbsp;
+        <b>{{comment.author}}</b>&nbsp;&nbsp; {{comment.content}}
+        <button class="btn btn-danger btn-xs" ng-show="comment.id.length > 0"
+                ng-click="ctrl.deleteComment(comment.id)">
+          X</button>
+      </li>
+    </ul>
+  </div>
+</div>

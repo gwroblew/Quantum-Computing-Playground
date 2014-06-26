@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<LifecycleConfiguration>
+    <Rule>
+        <Action>
+            <Delete/>
+        </Action>
+        <Condition>
+            <Age>30</Age>
+        </Condition>
+    </Rule>
+</LifecycleConfiguration>

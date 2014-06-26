@@ -1,0 +1,70 @@
+application: auto
+version: auto
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+handlers:
+- url: /js
+  static_dir: js
+
+- url: /css
+  static_dir: css
+
+- url: /fonts
+  static_dir: fonts
+
+- url: /savescript
+  script: app.app
+
+- url: /loadscript
+  script: app.app
+
+- url: /getuserinfo
+  script: app.app
+
+- url: /loadcomments
+  script: app.app
+
+- url: /addcomment
+  script: app.app
+
+- url: /deletecomment
+  script: app.app
+
+- url: /loadmyscripts
+  script: app.app
+
+- url: /removeoldscripts
+  script: app.app
+
+- url: /images
+  static_dir: images
+
+- url: /
+  static_files: templates/index.html
+  upload: templates/index.html
+
+- url: /
+  static_dir: templates
+
+################################################################################
+skip_files:
+# Default patterns skipped by App Engine, which must be repeated since
+# specifying skip_files overrides them otherwise.  See
+# https://developers.google.com/appengine/docs/python/config/appconfig#Skipping_Files.
+- ^(.*/)?app\.yaml
+- ^(.*/)?app\.yml
+- ^(.*/)?index\.yaml
+- ^(.*/)?index\.yml
+- ^(.*/)?#.*#
+- ^(.*/)?.*~
+- ^(.*/)?.*\.py[co]
+- ^(.*/)?.*/RCS/.*
+- ^(.*/)?\..*
+# Files produced by blaze that have no effect in App Engine's runtime.
+- ^.*\.so$
+- ^.*pywrap.+\.py$
+- ^.*\.jslib$
+- ^.*\.CMF$
+- ^.*\.MF$

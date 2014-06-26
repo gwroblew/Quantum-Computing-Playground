@@ -1,0 +1,36 @@
+<div id="loader">
+  <p style="text-align:center;">Loading...</p>
+  <div class="progress progress-striped active">
+    <div class="progress-bar" role="progressbar" id="progress-div"
+         aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+      <span class="sr-only" id="progress-span">0% Complete</span>
+    </div>
+  </div>
+</div>
+<div class="demo-window">
+  <div id="demo" class"demo-img">
+    <img id="page01" class="preload" src="images/page01.png" onloaded />
+    <img id="page02" class="preload" src="images/page02.png" onloaded />
+    <img id="page03" class="preload" src="images/page03.png" onloaded />
+    <img id="page04" class="preload" src="images/page04.png" onloaded />
+    <img id="page05" class="preload" src="images/page05.png" onloaded />
+    <img id="page06" class="preload" src="images/page06.png" onloaded />
+    <img id="page07" class="preload" src="images/page07.png" onloaded />
+  </div>
+  <div id="arrow" style="display:none;z-index: 1000;">
+    <svg width="64" height="64" xmlns="http://www.w3.org/2000/svg">
+      <g>
+        <path d="m47.0676,30.3276l-41.13822,-25.67846l23.36882,43.82946l5.8776,-5.7271l12.3083,13.2175l5.6693,-5.5242l-12.4013,-13.5445l6.3155,-6.5728l0,0.0001z"
+              id="path827" stroke-linejoin="round" stroke-linecap="round" stroke-width="1.75501"
+              stroke="#1f5876" fill-rule="evenodd" fill="#3db0ed"/>
+      </g>
+    </svg>
+  </div>
+  <div id="demotext" class="demo-text" ng-show="demoText != ''">
+    <div class="panel panel-danger panel-maroon">
+      <div class="panel-body">
+        <h3><div ng-bind-html="demoText"></div></h3>
+      </div>
+    </div>
+  </div>
+</div>
