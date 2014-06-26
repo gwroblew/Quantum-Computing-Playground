@@ -1113,3 +1113,5 @@ quantum.PlaygroundController.prototype.animate = function() {
     this.renderer_.render(this.scene3d_, this.camera3d_);
   }
 };
+
+quantum.App.controller('PlaygroundCtrl', quantum.PlaygroundController);

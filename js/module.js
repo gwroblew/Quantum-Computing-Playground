@@ -310,7 +310,3 @@ quantum.App.controller('MyScriptsCtrl',
             $scope.myscripts = data;
           });
     });
-
-quantum.App.controller('DemoCtrl', quantum.DemoController);
-
-quantum.App.controller('PlaygroundCtrl', quantum.PlaygroundController);

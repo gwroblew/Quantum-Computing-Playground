@@ -224,3 +224,5 @@ quantum.DemoController.prototype.checkLoaded = function() {
     animStep();
   }
 };
+
+quantum.App.controller('DemoCtrl', quantum.DemoController);
