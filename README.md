@@ -12,4 +12,4 @@ To deploy your own copy of Quantum Computing Playground:
 
 At this point each push into your GitHub project should initiate AppEngine deployment and the website will be accessible under: http://your-project-name.appspot.com
 
-To populate examples create new scripts, record script identifiers from the playground URL, then paste them in module.js (see: https://github.com/gwroblew/Quantum-Computing-Playground/commit/745851aa9b466fdc4ef186cf26f8f99ca2d522fc).
+To populate examples create new scripts manually, record script identifiers from the playground URL, then paste them in module.js (see: https://github.com/gwroblew/Quantum-Computing-Playground/commit/745851aa9b466fdc4ef186cf26f8f99ca2d522fc).
