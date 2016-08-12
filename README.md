@@ -1,7 +1,7 @@
 Quantum-Computing-Playground
 ============================
 
-Source code of qcplayground.withgoogle.com.
+Source code of quantumplayground.net.
 
 To deploy your own copy of Quantum Computing Playground:
 
